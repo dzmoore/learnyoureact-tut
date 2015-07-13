@@ -8,8 +8,21 @@ app.engine('jsx', require('express-react-views').createEngine());
 
 require('node-jsx').install();
 
+console.log('process.argv: '+process.argv);
+var data = [
+  {
+    title:  'Shopping',
+    detail: process.argv[3]  
+  },
+  {
+    title:  'Hair cut',
+    detail: process.argv[4]
+  }
+];
+console.log('data: '+JSON.stringify(data));
 app.use('/', function(req, res) {
-  res.render('index', '');
+  console.log('returning '+JSON.stringify({data: data}));
+  res.render('index', {data: data});
 });
 
 app.listen(app.get('port'), function() {});
