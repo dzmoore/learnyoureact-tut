@@ -1,9 +1,15 @@
 var React = require('react');
 
-var style = {
-  tableContent: {
-    border: "1px solid black"
-  }
+var style = { 
+  checkedTodo: { 
+    textDecoration: "line-through" 
+  }, 
+  notCheckedTodo: { 
+    textDecoration: "none" 
+  }, 
+  tableContent: { 
+    border: "1px solid black" 
+  } 
 };
 
 var TodoBox = React.createClass({
@@ -57,7 +63,7 @@ var Todo = React.createClass({
   },
   render: function() {
     return (
-      <tr>
+      <tr style={this.state.checked ? style.checkedTodo : style.notCheckedTodo}>
         <td style={style.tableContent}>
           <input 
             type="checkbox" 
