@@ -52,10 +52,17 @@ var TodoList = React.createClass({
     this.setState({titleValue: ""});
     this.setState({detailValue: ""});
   }, 
+  deleteTodo: function(title) {
+    var newData = this.state.data.filter(function(val) {
+      return val.title !== title;
+    });
+
+    this.setState({data: newData});
+  },
   render: function() { 
     var todo = this.state.data.map(function(obj) { 
-      return <Todo title={obj.title} key={obj.title}>{obj.detail}</Todo>;
-    }); 
+      return <Todo title={obj.title} onDelete={this.deleteTodo} key={obj.title}>{obj.detail}</Todo>;
+    }.bind(this)); 
 
     return ( 
       <div className = "todoList"> 
@@ -77,7 +84,8 @@ var TodoList = React.createClass({
 
 var Todo = React.createClass({
   propTypes: {
-    title: React.PropTypes.string.isRequired
+    title: React.PropTypes.string.isRequired,
+    onDelete: React.PropTypes.func.isRequired
   },
   getInitialState: function() {
     return {
@@ -89,25 +97,18 @@ var Todo = React.createClass({
       checked: !this.state.checked
     });
   },
+  _onDelete: function() {
+    this.props.onDelete(this.props.title);
+  },
   render: function() {
     return (
-      <tr style={this.state.checked ? style.checkedTodo : style.notCheckedTodo}>
-        <td style={style.tableContent}>
-          <input 
-            type="checkbox" 
-            checked={this.state.checked}
-            onChange={this.handleChange}/>
-        </td>
-
-        <td style={style.tableContent}>
-          {this.props.title}
-        </td>
-
-        <td style={style.tableContent}>
-          {this.props.children}
-        </td>
-      </tr>
-    )
+      <tr style={this.state.TodoStyle}> 
+        <td style={style.tableContent}><button onClick={this._onDelete}>X</button></td> 
+        <td style={style.tableContent}><input type="checkbox" checked={this.state.checked} onChange={this.handleChange} /></td> 
+        <td style={style.tableContent}>{this.props.title}</td> 
+        <td style={style.tableContent}>{this.props.children}</td> 
+      </tr> 
+    );
   }
 });
 
